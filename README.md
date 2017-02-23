@@ -1,7 +1,8 @@
 # Machine Learning Engineer Nanodegree
 ## Heimdall - Digital payments fraud checks
 
-Jean Jung  
+Jean Jung
+
 February 22st, 2017
 
 ## I. Definition
