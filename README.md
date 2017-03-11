@@ -13,63 +13,88 @@ February 22st, 2017
 or credit card.
 1. **IP**: An Internet Protocol address (IP address) is a numerical label assigned to each device (e.g., computer, 
 printer) participating in a computer network that uses the Internet Protocol for communication.
+1. **API**: The acronym for Application Programming Interface, it is the schema or contract a computer application have 
+to follow to communicate with another application.
 1. **Impersonation**: The act of acting like other person for getting access to individual data, archives or resources.
+1. **Cash payment solutions**: Payment methods where the person buying online receives a voucher or a ticket and have to 
+pay it with money.
 
 ### Project Overview
 
-  In norse mythology, Heimdall or Heimdallr is the gatekeeper of Bitfröst, the bridge that connects Midgard (mans' earth)
-  to Asgard (Gods' realm). In other words he controls unwanted access to Gods' realm.
-   
-  For payment processing services confirming that a transaction is legitimate is vital to avoid fraud attacks that 
-  generates chargebacks[¹](https://github.com/jejung/heimdall#vocabulary).
+In norse mythology, Heimdall or Heimdallr is the gatekeeper of Bitfröst, the bridge that connects Midgard (mans' earth)
+to Asgard (Gods' realm). In other words he controls unwanted access to Gods' realm.
+
+For payment processing services confirming that a transaction is legitimate is vital to avoid fraud attacks that 
+generates chargebacks[¹](https://github.com/jejung/heimdall#vocabulary).
+
+The legitimacy of a transaction can be checked or monitored by analyzing a series of factors and patterns like 
+customer IP Address[²](https://github.com/jejung/heimdall#vocabulary), customer buying frequency, hour of day, 
+items category, customer age, customer documents, quantity of confirmed chargebacks and others. 
+
+Heimdall intends to be the one who decides which transaction can be accepted or not before forwarding it to the bank 
+or financial institution who will process the transaction. 
+
+In this project a mini API[³](https://github.com/jejung/heimdall#vocabulary) capable of analyze transactions and classify them on three levels of risk was created. 
+
+Risk levels:
+1. **LOW**: Low risk transaction, can be forwarded to the bank.
+1. **MEDIUM**: Medium risk level transactions can need a human intervention, making a review of the data and even 
+contacting the customer to validate the legitimacy of the transaction depending on the amount.
+1. **HIGH**: High risk transactions offers a real chargeback risk and should not be processed.
   
-  The legitimacy of a transaction can be checked or monitored by analyzing a series of factors and patterns like 
-  customer IP Address[²](https://github.com/jejung/heimdall#vocabulary), customer buying frequency, hour of day, 
-  items category, customer age, customer documents, quantity of confirmed chargebacks and others. 
-  
-  Heimdall intends to be the one who decides which transaction can be accepted or not before forwarding it to the bank 
-  or financial institution (Gods) who will process the transaction. 
 
 ### Problem Statement
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy 
-(outline of tasks) you will use to achieve the desired solution. 
-You should also thoroughly discuss what the intended solution will be for this problem. 
-Questions to ask yourself when writing this section:
-- _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
-- _Have you thoroughly discussed how you will attempt to solve the problem?_
-- _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
 
-    While processing online payments, it's very common to suffer fraud attacks, from people trying to validate credit 
-    card number stolen from anyone to elaborated attack plans that involve impersonation
-    [³](https://github.com/jejung/heimdall#vocabulary). There are a lot of tools to identify online fraud attacks and 
-    avoid chargebacks, the great majority of them focused on credit card attacks, which is the great target of attackers.
-    
-    Even that great majority of attacks involve credit card transactions, bank transactions or cash payment 
-    solutions[<sup>4</sup>](https://github.com/jejung/heimdall#vocabulary) are also victims of this type of cyber crime.
-    Above is a list of identified fraud attacks types 
-    [according to HSBC Bank](http://www.hsbc.com/online-banking/online-security/types-of-online-attack):
-     
-    * **Fraudulent supplier requests**: Attackers can call or email a employee asking for a payment on a order that does
-     not exist, giving her bank accounts for deposit for example. This type of attack targets companies and use unattended
-     people as a vulnerability to exploit.
-    * **Courier scams**: This type of attack focus on common people. An attacker can call or email the victim asking to 
-    his/her to return your credit card to bank in order to get a new one. Attackers can even dress themselves as courier
-    employees and go to your house taking the card from your hand. They also can ask you to cut your card in the half 
-    just to win credibility.
-    * **“Vishing”**: Victims of this type of attack will receive a call from the attacker, he will talk as if he is from
-    bank staff or police investigation and try to obtain private information such as passwords, security code or even 
-    indirect information like full address, family, full name, documents and etc.
-    * **Keystroke capturing/logging**: This is a cyber attack. Victims of this type of attack will have an unwanted
-    software on their computer or another device like smartphone or tablet that will keep track of anything that is 
-    inputted, like bank accounts and passwords for example.
-    * **Pharming**: Pharming is when a fraudster creates false websites in the hope that people will visit them by mistake.
-    People can sometimes do this by mistyping a website address–or sometimes a fraudster can redirect traffic from a 
-    genuine website to their own. The 'pharmer' will then try to obtain your personal details when you enter them into 
-    the false website.
+While processing online payments, it's very common to suffer fraud attacks, from people trying to validate credit 
+card number stolen from anyone to elaborated attack plans that involve impersonation
+[<sup>4</sup>](https://github.com/jejung/heimdall#vocabulary). There are a lot of tools to identify online fraud attacks and 
+avoid chargebacks, the great majority of them focused on credit card attacks.
 
-    This list shows us that, in the majority of fraud attacks, fraudsters are looking for people data for posterior use.
-     
+Even that great majority of attacks involve credit card transactions, bank transactions or cash payment 
+solutions[<sup>5</sup>](https://github.com/jejung/heimdall#vocabulary) are also victims of this type of cyber crime.
+Above there is a list of known fraud attacks types 
+[according to HSBC Bank](http://www.hsbc.com/online-banking/online-security/types-of-online-attack):
+ 
+* **Fraudulent supplier requests**: Attackers can call or email a employee asking for a payment on an order that 
+does not exists, giving her bank accounts for deposit for example. This type of attack targets companies and use 
+unattended people as a vulnerability to exploit.
+* **Courier scams**: This type of attack focus on common people. An attacker can call or email the victim asking to 
+him/her to return your credit card to bank in order to get a new one. Attackers can even dress themselves as courier
+employees and go to victim's house taking the card from his hand. They also can ask you to cut your card in the half 
+just to win credibility.
+* **“Vishing”**: Victims of this type of attack will receive a call from the attacker that will talk as being from
+bank staff or police investigation and try to obtain private information such as passwords, security code or even 
+indirect information like full address, family, full name, documents and etc.
+* **Keystroke capturing/logging**: This is a cyber attack. Victims of this type of attack will have an unwanted
+software on their computer or another device like smartphone or tablet that will keep track of anything that is 
+inputted like bank accounts and passwords for example.
+* **Pharming**: Pharming occurs when a fraudster creates false websites in the hope that victims will visit them by 
+mistake. People can sometimes do this by mistyping a website address or sometimes a fraudster can redirect traffic 
+from a genuine website to their own. The 'pharmer' will then try to obtain your personal details when you enter them 
+into the false website.
+
+This list shows us that in the majority, fraudsters are looking for people data for posterior use. Since this is 
+true, fraud detection tools should look for patterns and common data on every transaction, trying to find requests 
+that does not follow the pattern for each customer and learn from identified attacks to predict new issues in the 
+future. 
+
+Heimdall will act inspecting every transaction sent to him by API and answering one of the three possible levels 
+with some additional data that explains the response.
+ 
+- API's clients will have to provide enough information to:
+    1. Identify customer;
+    1. Identify customer's supposed device;
+    1. Identify product category;
+    1. Identify payment method;
+    1. Identify billing information;
+    1. Identify transaction in future communication;
+- Every divergence between Heimdall response and transaction final status needs to be notified via API call.
+- Chargebacks needs to be notified via API call.
     
+#### Transaction flow
+
+![heimdallflow](https://cloud.githubusercontent.com/assets/13054871/23780514/3044b184-0526-11e7-8fa8-29005af09129.jpg)
+
 ### Metrics
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
 - _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
