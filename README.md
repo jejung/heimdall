@@ -37,6 +37,7 @@ or financial institution who will process the transaction.
 In this project a mini API[³](https://github.com/jejung/heimdall#vocabulary) capable of analyze transactions and classify them on three levels of risk was created. 
 
 Risk levels:
+
 1. **LOW**: Low risk transaction, can be forwarded to the bank.
 1. **MEDIUM**: Medium risk level transactions can need a human intervention, making a review of the data and even 
 contacting the customer to validate the legitimacy of the transaction depending on the amount.
