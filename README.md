@@ -74,10 +74,9 @@ mistake. People can sometimes do this by mistyping a website address or sometime
 from a genuine website to their own. The 'pharmer' will then try to obtain your personal details when you enter them 
 into the false website.
 
-This list shows us that in the majority, fraudsters are looking for people data for posterior use. Since this is 
-true, fraud detection tools should look for patterns and common data on every transaction, trying to find requests 
-that does not follow the pattern for each customer and learn from identified attacks to predict new issues in the 
-future. 
+This list shows us that in majority, fraudsters are looking for people data for posterior use. Since this is true, fraud 
+detection tools should look for patterns and common data on every transaction, trying to find requests that does not 
+follow the pattern for each customer and learn from identified attacks to predict new issues in future. 
 
 Heimdall will act inspecting every transaction sent to him by API and answering one of the three possible levels 
 with some additional data that explains the response.
@@ -100,6 +99,24 @@ with some additional data that explains the response.
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
 - _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
 - _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
+
+Heimdall has two important components, the boundary reinforcements learning agent filter and the core learning agent 
+that validates considering all the features. An overall metric that could validate Heimdall's performance will be
+chargeback rate, the number of transactions that Heimdall approved but there was a chargeback on future. This can be
+obtained by the following formula:
+
+    r(t, c) = c / t
+
+Where `r` is chargeback rate, `t` is the count of approved transactions and `c` is the count of chargebacks.   
+ 
+Even that this measurement makes sense on a production environment for fast and simple performance monitoring, during
+development or maintenance of the API, we need to validate components individually and with more accuracy.
+
+##### Filter - Reinforcements Learning Agent 
+
+For filter, Heimdall will use the Average Reward Metric. This is the most common way to measure a 
+
+Average
 
 ## II. Analysis
 _(approx. 2-4 pages)_

@@ -1,6 +1,17 @@
-appdirs==1.4.3
+coreapi==2.3.0
+coreschema==0.0.4
 Django==1.10.6
-	packaging==16.8
+django-crispy-forms==1.6.1
+django-filter==1.0.1
+django-guardian==1.4.6
+djangorestframework==3.6.2
+itypes==1.1.0
+Jinja2==2.9.5
+Markdown==2.6.8
+MarkupSafe==1.0
+packaging==16.8
 psycopg2==2.7
 pyparsing==2.2.0
+requests==2.13.0
 six==1.10.0
+uritemplate==3.0.0
