@@ -27,7 +27,7 @@ the need of every employee needing to know about all the organization's processe
 different issues. With this layout there is a triage to check for what group an issue should be sent. This is
 represented on the image bellow:
 
-![Help desk](http://www.opensourcehelpdeskguide.com/images/help-desk.jppg)
+![Help desk](http://www.opensourcehelpdeskguide.com/images/help-desk.jpg)
 
 It takes time to classify every incoming request, the operator needs to open the request, identify the requester, read
 its content, see if it is a valid request, understand what the requester needs, identify the staff group it belongs to
