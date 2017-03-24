@@ -12,40 +12,65 @@ February 22st, 2017
 In norse mythology, Heimdall or Heimdallr is the gatekeeper of Bitfröst, the bridge that connects Midgard (mans' earth)
 to Asgard (Gods' realm). In other words he controls unwanted access to Gods' realm.
 
-In this project we will try to do both, control unwanted emails being displayed on a mail box and also classify them and
+In this project we will try to do both, control unwanted emails received on a mail box and also classify them and
 forward to someone who is capable of reading, understanding and resolving it as fast as possible.
 
 This feature is very important for help desk systems, while do you have a big team that should know a bit about almost 
 everything you could have various teams that know a lot about a bit o things and resolve specific problems all day, 
-improving your response quality and agility.
-
-The idea is to, instead of having generic queues or a human triage you can have a learning worker that analyses every
-email your help desk receive and classify it.
+improving your responses quality and agility.
 
 ### Problem Statement
 
+All day in help desk systems there are a lot of emails coming from different sources stating about different problems.
+Each of these issues require specific acknowledgement of some part of the organization process. A common way to avoid
+the need of every employee needing to know about all the organization's processes is to have different groups to check
+different issues. With this layout there is a triage to check for what group an issue should be sent. This is
+represented on the image bellow:
+
+![Help desk](http://www.opensourcehelpdeskguide.com/images/help-desk.jppg)
+
+It takes time to classify every incoming request, the operator needs to open the request, identify the requester, read
+its content, see if it is a valid request, understand what the requester needs, identify the staff group it belongs to
+finally classify and forward the request, and this is done to every request issued.
+
+It would be a great time gain if this could be done automatically as son as any request arrives. 
+
 ### Metrics
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-- _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
-- _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
 
-Heimdall has two important components, the boundary reinforcements learning agent filter and the core learning agent 
-that validates considering all the features. An overall metric that could validate Heimdall's performance will be
-chargeback rate, the number of transactions that Heimdall approved but there was a chargeback on future. This can be
-obtained by the following formula:
+#### Accuracy
 
-    r(t, c) = c / t
+Heimdall will use Accuracy metric to measure performance of models being used/tested to solve the problem.
 
-Where `r` is chargeback rate, `t` is the count of approved transactions and `c` is the count of chargebacks.   
- 
-Even that this measurement makes sense on a production environment for fast and simple performance monitoring, during
-development or maintenance of the API, we need to validate components individually and with more accuracy.
+Classification accuracy is the number of correct predictions made as a ratio of all predictions made. This is the most 
+common method used to measure performance on classification models.
 
-##### Filter - Reinforcements Learning Agent 
+The formula can be expressed as:
 
-For filter, Heimdall will use the Average Reward Metric. This is the most common way to measure a  
+    X = t / n * 100
+    
+Where `X` is the accuracy, `t` is the number of correctly classified samples and `n` is the total number of samples, 
+thus the accuracy will be a number between 0 and 1 representing the percentage of right predictions made.
 
-Average
+We will use this to estimate how many emails would be correctly classified per day.
+
+#### Confusion matrix
+
+During development a confusion matrix will be used to identify the exactly point we are failing and help us improve our
+classification model.
+
+A Confusion matrix consists of a table in form `N * N` where `N` is the number of possible values or classes. On every
+cell you have the count of a `predicted vs actual` conflict happened with the respective values represented by row and
+column positions.
+
+Example:
+
+        A   B   C
+    A   10  2   3
+    B   9   20  0   
+    C   1   5   7
+
+With the given matrix we can see that `A` was predicted correctly 10 times and there was 2 times it was predicted when
+the actual value was `B`.
 
 ## II. Analysis
 _(approx. 2-4 pages)_
