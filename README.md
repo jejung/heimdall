@@ -12,18 +12,14 @@ February 22st, 2017
 In norse mythology, Heimdall or Heimdallr is the gatekeeper of Bitfröst, the bridge that connects Midgard (mans' earth)
 to Asgard (Gods' realm). In other words he controls unwanted access to Gods' realm.
 
-In this project we will try to do both, control unwanted emails received on a mail box and also classify them and
-forward to someone who is capable of reading, understanding and resolving it as fast as possible.
-
-This feature is very important for help desk systems, while do you have a big team that should know a bit about almost 
-everything you could have various teams that know a lot about a bit o things and resolve specific problems all day, 
-improving your responses quality and agility.
+This project will try to do both, control unwanted emails received on a mail box and classify wanted emails to be
+forwarded to someone who is capable of reading, understanding and resolving it as fast as possible.
 
 ### Problem Statement
 
 All day in help desk systems there are a lot of emails coming from different sources stating about different problems.
-Each of these issues require specific acknowledgement of some part of the organization process. A common way to avoid
-the need of every employee needing to know about all the organization's processes is to have different groups to check
+Each of these require specific abilities and know-how of some part of the organization's process. A common way to avoid
+every employee needing to know about all the organization's processes is to have different groups to check
 different issues. With this layout there is a triage to check for what group an issue should be sent. This is
 represented on the image bellow:
 
@@ -33,7 +29,12 @@ It takes time to classify every incoming request, the operator needs to open the
 its content, see if it is a valid request, understand what the requester needs, identify the staff group it belongs to
 finally classify and forward the request, and this is done to every request issued.
 
-It would be a great time gain if this could be done automatically as son as any request arrives. 
+It would be a great time gain if this could be done automatically as son as any request arrives.
+
+To solve this problem, Heimdall will integrate with help desk systems available on market to get access to email 
+contents. It will analyze the already classified emails training a Supervised Learning Classification model. When ready,
+it will start to inspect every incoming email and classify them using any type of tagging system available from the
+chosen platform or forwarding the email to a previously defined list for each label.
 
 ### Metrics
 
