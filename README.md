@@ -83,6 +83,53 @@ In this section, you will be expected to analyze the data you are using for the 
 - _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
 - _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
 
+One of the best text example datasets available on internet currently is the 
+[20 newsgroups dataset](http://scikit-learn.org/stable/datasets/twenty_newsgroups.html#newsgroups), freely distributed 
+on scikit-learn python's library.
+
+This dataset contains around 180000 newsgroups posts on 20 subtopics. The dataset itself is already split on train and 
+test parts to be used on leaning models.
+
+Even this dataset is not composed by emails, it can be used to train and measure a email classifier tool, since Heimdall
+is supposed to use only general text classifying tools. 
+
+Scikit-learn has functions to fetch and load the data into python arrays containing raw text and labels related. We 
+start by using the `sklearn.datasets.fetch_20newsgroups` function to retrieve the data this will return a python object
+with two attributes:
+ 
+* **data**: A list containing raw texts from news posts.
+* **target**: A list where each value is the label of the correspondent entry on the data list.
+
+For Heimdall will be used only between 4 and 6 categories because this would be the average number of departments a
+company will have so we don't need a model that is capable of identifying 20 categories.
+
+According to the documentation, the categories are:
+
+    'alt.atheism',
+    'comp.graphics',
+    'comp.os.ms-windows.misc',
+    'comp.sys.ibm.pc.hardware',
+    'comp.sys.mac.hardware',
+    'comp.windows.x',
+     'misc.forsale',
+     'rec.autos',
+     'rec.motorcycles',
+     'rec.sport.baseball',
+     'rec.sport.hockey',
+     'sci.crypt',
+     'sci.electronics',
+     'sci.med',
+     'sci.space',
+     'soc.religion.christian',
+     'talk.politics.guns',
+     'talk.politics.mideast',
+     'talk.politics.misc',
+     'talk.religion.misc'
+     
+Exploring the data, we can see that the distribution of the categories are like:
+ 
+![feature_dist](https://cloud.githubusercontent.com/assets/13054871/24388181/56fa9172-134f-11e7-9a01-b75a204d6a55.png)
+
 ### Exploratory Visualization
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
 - _Have you visualized a relevant characteristic or feature about the dataset or input data?_
@@ -94,6 +141,8 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
 - _Are the techniques to be used thoroughly discussed and justified?_
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
+
+In order to achieve this Heimdall will use the Bag of Words model, commonly used on natural language processing. 
 
 ### Benchmark
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
