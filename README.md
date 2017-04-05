@@ -74,14 +74,8 @@ With the given matrix we can see that `A` was predicted correctly 10 times and t
 the actual value was `B`.
 
 ## II. Analysis
-_(approx. 2-4 pages)_
 
 ### Data Exploration
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
-- _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
-- _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
 
 One of the best text example datasets available on internet currently is the 
 [20 newsgroups dataset](http://scikit-learn.org/stable/datasets/twenty_newsgroups.html#newsgroups), freely distributed 
@@ -130,11 +124,33 @@ Exploring the data, we can see that the distribution of the categories are like:
  
 ![feature_dist](https://cloud.githubusercontent.com/assets/13054871/24388181/56fa9172-134f-11e7-9a01-b75a204d6a55.png)
 
+We can see that data is well distributed, just some of the categories like `alt.atheism` and `talk.religion.misc` have 
+less examples, other ones are balanced. We will choose the `sci` categories group to validate our model, since the 
+distribution is well balanced on that classes and the contents will be very similar, the same as in a help desk system.
+
+Filtering data to use the chosen ones we end up with:
+ 
+    Size of train data: 2373 samples
+    Size of test data: 1579 samples
+    
+
 ### Exploratory Visualization
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+
+Looking on below image we can see the most repeatable words for 6 arbitrary documents:
+ 
+![word_count](https://cloud.githubusercontent.com/assets/13054871/24683599/69805bc4-1976-11e7-9ee6-fb733b10db7f.png)
+
+We've found that prepositions and articles like 'the', 'and', 'is', 'in' and etc. are too much bigger than other words 
+in the great majority of the documents. With the exception of Topic 2, all other topics seems to be natural text so this
+will happen with almost any email delivered on the internet today.
+
+It can turn things difficult to classify since this words will appear on every document. To avoid this problem we 
+will analyze a TF-IDF (Term Frequency–Inverse Document Frequency) to find the words that appear only in some documents.
+
+![tfidf](https://cloud.githubusercontent.com/assets/13054871/24684492/c4583d5e-197c-11e7-80a6-35982ec305e3.png)
+
+We can see now that with TF-IDF all words for each topic have changed turning into more specific words, what will
+make possible to identify a document by presence of some of these words.
 
 ### Algorithms and Techniques
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
