@@ -146,6 +146,7 @@ will happen with almost any email delivered on the internet today.
 
 It can turn things difficult to classify since this words will appear on every document. To avoid this problem we 
 will analyze a TF-IDF (Term Frequency–Inverse Document Frequency) to find the words that appear only in some documents.
+We will explain the TF-IDF functionality later on this paper.
 
 ![tfidf](https://cloud.githubusercontent.com/assets/13054871/24684492/c4583d5e-197c-11e7-80a6-35982ec305e3.png)
 
@@ -158,7 +159,31 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Are the techniques to be used thoroughly discussed and justified?_
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
-In order to achieve this Heimdall will use the Bag of Words model, commonly used on natural language processing. 
+In order to achieve this Heimdall will use the Bag of Words model, commonly used on natural language processing. One of 
+the great advantages of using this algorithm is the simplicity and extensibility. 
+
+There are a lot of variations and with scikit-learn it's simple to do a benchmark through them, so this is what we will 
+do.
+
+Bag of words algorithms work by making a dictionary of all words on a text and associating them to a score. The 
+variations include the Count score, the TF-IDF score and the Hashing score.
+
+#### Count
+
+The Count score is the most simple, it is just measures the frequency each word appears on the text.
+
+#### TF-IDF
+
+The Term Frequency - Inverse Document Frequency is more complex, it works giving each word the score as a relation 
+between the term frequency over all documents and the inverse frequency of documents it appears.
+
+#### Hashing
+
+Almost the same as the Count approach, but use a token for indexing instead the word itself what save computational
+resources.
+
+All these three implementations result in a matrix of terms and his scores. This matrix can be forwarded to any 
+classification model as all features will be numeric.
 
 ### Benchmark
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
