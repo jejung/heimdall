@@ -159,31 +159,72 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Are the techniques to be used thoroughly discussed and justified?_
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
-In order to achieve this Heimdall will use the Bag of Words model, commonly used on natural language processing. One of 
-the great advantages of using this algorithm is the simplicity and extensibility. 
+In order to achieve his objective Heimdall will use the Bag of Words model, commonly used on natural language processing. One of 
+the great advantages of using this algorithm is the simplicity and extensibility.
+ 
+ #### Feature extraction algorithms
+
+A raw text itself is not a good input source for a classifier algorithm. Classification models expect it's input data to
+be something with measurable and comparable values, also called features. What do you can extract from "Hi, 
+I have a problem", for us humans it's simple to say that it seems there is someone with problems, but what a computer
+algorithm can extract from this data? The size? Maybe but how do you classify texts by size? Large, short? That is not
+what we want, we need more.
+ 
+This is what feature extraction extends for. This algorithms transform raw text documents into a matrix with relevant
+features like the frequency a specific word appears for example.  
 
 There are a lot of variations and with scikit-learn it's simple to do a benchmark through them, so this is what we will 
 do.
 
-Bag of words algorithms work by making a dictionary of all words on a text and associating them to a score. The 
-variations include the Count score, the TF-IDF score and the Hashing score.
-
-#### Count
+##### Count
 
 The Count score is the most simple, it is just measures the frequency each word appears on the text.
 
-#### TF-IDF
+##### TF-IDF
 
 The Term Frequency - Inverse Document Frequency is more complex, it works giving each word the score as a relation 
 between the term frequency over all documents and the inverse frequency of documents it appears.
 
-#### Hashing
+##### Hashing
 
 Almost the same as the Count approach, but use a token for indexing instead the word itself what save computational
 resources.
 
 All these three implementations result in a matrix of terms and his scores. This matrix can be forwarded to any 
 classification model as all features will be numeric.
+
+##### PCA
+
+Principal Component Analysis is an algorithm used to discover which set of features imply on a higher data variance, 
+ranking this way the best features that can be used on a classifier model. Heimdall will choose just N best features to 
+save computational resources on query operations.
+
+#### Classifier algorithm 
+
+##### Multinomial Naive Bayes
+
+This algorithm is a implementation of the Naive Bayes algorithm for multinomially distributed data. This algorithm is 
+known to work well with text documents. Even this is designed for receiving a vectorized word-count data it also works
+well with TF-IDF matrices.
+
+It can performs well since it take advantage of probabilities, since the probability of certain words appear on a 
+specific email request type is great.
+
+##### KNN
+
+The K-Nearest Neighbour classifier works by finding elements that approximate their values, in our scenario it can make
+sense. We can think if we have the same words appearing in two different texts with almost the same frequency so they
+should be talking of the same thing!
+
+This algorithm has the advantage of being very fast on training but a bit slow on querying.
+
+##### SVM
+
+Support Vector Machines is an algorithm that classifies data separating their data points with vectors in some 
+dimensions and calculating their distance to that vector. In order to discover all the different categories, the maximum
+gap between data points will be found, so a point can be classified based on which side of the gap they fall.
+
+This algorithm reduce the need for labeled training instances.
 
 ### Benchmark
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
