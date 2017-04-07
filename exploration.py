@@ -79,5 +79,5 @@ if __name__ == '__main__':
     y_train, y_test = data_train.target, filtered_test_data.target
 
     topic_count = 6
-    #analyze_vectorizer(data_train, topic_count, CountVectorizer())
+    analyze_vectorizer(data_train, topic_count, CountVectorizer())
     analyze_vectorizer(data_train, topic_count, TfidfVectorizer())
