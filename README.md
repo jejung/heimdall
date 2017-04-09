@@ -204,7 +204,7 @@ known to work well with text documents. Even this is designed for receiving a ve
 well with TF-IDF matrices.
 
 It can performs well since it take advantage of probabilities, since the probability of certain words appear on a 
-specific email request type is great.
+specific email request type is great, but it needs a lot of training samples.
 
 ##### KNN
 
@@ -220,7 +220,7 @@ Support Vector Machines is an algorithm that classifies data separating their da
 dimensions and calculating their distance to that vector. In order to discover all the different categories, the maximum
 gap between data points will be found, so a point can be classified based on which side of the gap they fall.
 
-This algorithm reduce the need for labeled training instances.
+This algorithm reduce the need for labeled training instances, with     
 
 ### Benchmark
 
@@ -229,8 +229,16 @@ Let's do a first checkout of how everything we mentioned applies on our simulate
 With a simple script we have executed the combinations of the algorithms mentioned earlier and created a graphic showing
 the results:
 
-![benchmark](https://cloud.githubusercontent.com/assets/13054871/24840306/4032cb3e-1d41-11e7-9cb1-d6c664b3ec9b.png)
+![Benchmark](https://cloud.githubusercontent.com/assets/13054871/24840306/4032cb3e-1d41-11e7-9cb1-d6c664b3ec9b.png)
 
+We can see in the results that as predicted the KNN algorithm has the slowest testing time, the surprise is that it has
+the worst score. The best combination for a KNN model is the TF-IDF vectorizer, it has a good score but a very high test
+time.
+
+The SVC algorithm has an impressive score, the greatest for Hashing and TF-IDF vectorizers, just staying behind Naive 
+Bayes with the Count value, but in counter part has the slowest training time.
+
+The Multinomial Naive Bayes algorithm performs very well. It has great scores and small training and test times.
 
 ## III. Methodology
 _(approx. 3-5 pages)_
