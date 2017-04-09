@@ -1,8 +1,5 @@
 from __future__ import print_function
 
-import logging
-import numpy as np
-import matplotlib.pyplot as plt
 from pylab import *
 
 from sklearn.datasets import fetch_20newsgroups
@@ -50,17 +47,17 @@ def print_top_words(topic_idx, model, feature_names, n_top_words):
     ax.set_ylabel('Score')
     ax.set_title('Topic {}'.format(topic_idx + 1))
     ax.set_xticks(ind)
-    ax.set_xticklabels([feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]], rotation='vertical')
-    print("Topic #%d:" % topic_idx)
-    print(" ".join([feature_names[i]
-                    for i in topic.argsort()[:-n_top_words - 1:-1]]))
+    ax.set_xticklabels([str(feature_names[i]) for i in topic.argsort()[:-n_top_words - 1:-1]], rotation='vertical')
 
 
 def analyze_vectorizer(data, document_count, vectorizer):
     feature_matrix = vectorizer.fit_transform(data.data)
 
     nmf = NMF(n_components=document_count, random_state=1, alpha=.1, l1_ratio=.5).fit(feature_matrix)
-    count_feature_names = vectorizer.get_feature_names()
+    if hasattr(vectorizer, 'get_feature_names'):
+        count_feature_names = vectorizer.get_feature_names()
+    else:
+        count_feature_names = np.arange(feature_matrix.shape[1])
 
     plt.figure(1)
     for i in range(document_count):
@@ -79,5 +76,6 @@ if __name__ == '__main__':
     y_train, y_test = data_train.target, filtered_test_data.target
 
     topic_count = 6
+    analyze_vectorizer(data_train, topic_count, HashingVectorizer(non_negative=True))
     analyze_vectorizer(data_train, topic_count, CountVectorizer())
     analyze_vectorizer(data_train, topic_count, TfidfVectorizer())
