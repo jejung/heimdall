@@ -154,10 +154,6 @@ We can see now that with TF-IDF all words for each topic have changed turning in
 make possible to identify a document by presence of some of these words.
 
 ### Algorithms and Techniques
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
 In order to achieve his objective Heimdall will use the Bag of Words model, commonly used on natural language processing. One of 
 the great advantages of using this algorithm is the simplicity and extensibility.
@@ -227,9 +223,13 @@ gap between data points will be found, so a point can be classified based on whi
 This algorithm reduce the need for labeled training instances.
 
 ### Benchmark
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- _Has some result or value been provided that acts as a benchmark for measuring performance?_
-- _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
+
+Let's do a first checkout of how everything we mentioned applies on our simulated "real world". 
+ 
+With a simple script we have executed the combinations of the algorithms mentioned earlier and created a graphic showing
+the results:
+
+![benchmark](https://cloud.githubusercontent.com/assets/13054871/24840306/4032cb3e-1d41-11e7-9cb1-d6c664b3ec9b.png)
 
 
 ## III. Methodology
