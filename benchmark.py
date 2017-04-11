@@ -4,6 +4,7 @@ import numpy as np
 from utils import size_mb
 from time import time
 from sklearn.datasets import fetch_20newsgroups
+from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors.classification import KNeighborsClassifier
@@ -38,7 +39,7 @@ class Result:
         self.vectorizer = None
 
 
-def benchmark(vectorizer, clf):
+def benchmark(vectorizer, clf, with_pca=False):
     result = Result()
     result.vectorizer = vectorizer
     result.clf = clf
@@ -48,6 +49,10 @@ def benchmark(vectorizer, clf):
     t0 = time()
     X_train = vectorizer.fit_transform(data_train.data)
     X_test = vectorizer.transform(data_test.data)
+    if with_pca:
+        svd = TruncatedSVD(algorithm='arpack')
+        X_train = svd.fit_transform(X_train, y_train)
+        X_test = svd.transform(X_test)
     duration = time() - t0
     result.pre_processing_time = duration
     print('Done in {:.3f}s at {:.3f} MB/s'.format(duration, (train_size_mb + test_size_mb) / duration))
@@ -72,54 +77,87 @@ def benchmark(vectorizer, clf):
     return result
 
 
-results = []
+def plot_results(results, image_name):
+    results = [
+        (x.vectorizer.__class__.__name__ + '/' + x.clf.__class__.__name__, x.score, x.training_time, x.testing_time) for
+        x in results]
 
-hashing = HashingVectorizer(non_negative=True)
-knn = KNeighborsClassifier()
-results.append(benchmark(hashing, knn))
-svc = LinearSVC()
-results.append(benchmark(hashing, svc))
-naive_bayes = MultinomialNB()
-results.append(benchmark(hashing, naive_bayes))
+    indices = np.arange(len(results))
 
-count = CountVectorizer()
-knn = KNeighborsClassifier()
-results.append(benchmark(count, knn))
-svc = LinearSVC()
-results.append(benchmark(count, svc))
-naive_bayes = MultinomialNB()
-results.append(benchmark(count, naive_bayes))
+    clf_names, score, training_time, test_time = [[x[i] for x in results] for i in range(4)]
+    training_time = np.array(training_time) / np.max(training_time)
+    test_time = np.array(test_time) / np.max(test_time)
 
-tfidf = TfidfVectorizer()
-knn = KNeighborsClassifier()
-results.append(benchmark(tfidf, knn))
-svc = LinearSVC()
-results.append(benchmark(tfidf, svc))
-naive_bayes = MultinomialNB()
-results.append(benchmark(tfidf, naive_bayes))
+    plt.figure(figsize=(12, 10))
+    plt.title("Benchmark")
+    plt.barh(indices, score, .2, label="score", color='navy')
+    plt.barh(indices + .3, training_time, .2, label="training time", color='c')
+    plt.barh(indices + .6, test_time, .2, label="test time", color='darkorange')
+    plt.yticks(())
+    plt.legend(loc='best')
+    plt.subplots_adjust(left=.25)
+    plt.subplots_adjust(top=.95)
+    plt.subplots_adjust(bottom=.05)
+
+    for i, c in zip(indices, clf_names):
+        plt.text(-.37, i, c)
+
+    plt.savefig(image_name)
+    plt.show()
 
 
-indices = np.arange(len(results))
+mode = 'datapreprocessing'
 
-results = [(x.vectorizer.__class__.__name__ + '/' + x.clf.__class__.__name__, x.score, x.training_time, x.testing_time) for x in results]
+if mode == 'benchmark':
+    results = []
 
-clf_names, score, training_time, test_time = [[x[i] for x in results] for i in range(4)]
-training_time = np.array(training_time) / np.max(training_time)
-test_time = np.array(test_time) / np.max(test_time)
+    hashing = HashingVectorizer(non_negative=True)
+    knn = KNeighborsClassifier()
+    results.append(benchmark(hashing, knn))
+    svc = LinearSVC()
+    results.append(benchmark(hashing, svc))
+    naive_bayes = MultinomialNB()
+    results.append(benchmark(hashing, naive_bayes))
 
-plt.figure(figsize=(12, 10))
-plt.title("Benchmark")
-plt.barh(indices, score, .2, label="score", color='navy')
-plt.barh(indices + .3, training_time, .2, label="training time", color='c')
-plt.barh(indices + .6, test_time, .2, label="test time", color='darkorange')
-plt.yticks(())
-plt.legend(loc='best')
-plt.subplots_adjust(left=.25)
-plt.subplots_adjust(top=.95)
-plt.subplots_adjust(bottom=.05)
+    count = CountVectorizer()
+    knn = KNeighborsClassifier()
+    results.append(benchmark(count, knn))
+    svc = LinearSVC()
+    results.append(benchmark(count, svc))
+    naive_bayes = MultinomialNB()
+    results.append(benchmark(count, naive_bayes))
 
-for i, c in zip(indices, clf_names):
-    plt.text(-.37, i, c)
+    tfidf = TfidfVectorizer()
+    knn = KNeighborsClassifier()
+    results.append(benchmark(tfidf, knn))
+    svc = LinearSVC()
+    results.append(benchmark(tfidf, svc))
+    naive_bayes = MultinomialNB()
+    results.append(benchmark(tfidf, naive_bayes))
+    image_name = 'data/benchmark.png'
 
-plt.savefig('data/benchmark.png')
-plt.show()
+    plot_results(results, image_name)
+
+elif mode == 'datapreprocessing':
+
+    results = []
+
+    count = CountVectorizer(max_features=100)
+    knn = KNeighborsClassifier()
+    results.append(benchmark(count, knn, with_pca=True))
+    svc = LinearSVC()
+    results.append(benchmark(count, svc, with_pca=True))
+    naive_bayes = MultinomialNB()
+    results.append(benchmark(count, naive_bayes, with_pca=True))
+
+    tfidf = TfidfVectorizer(max_features=100)
+    knn = KNeighborsClassifier()
+    results.append(benchmark(tfidf, knn, with_pca=True))
+    svc = LinearSVC()
+    results.append(benchmark(tfidf, svc, with_pca=True))
+    naive_bayes = MultinomialNB()
+    results.append(benchmark(tfidf, naive_bayes, with_pca=True))
+
+    image_name = 'data/preprocessing.png'
+
+    plot_results(results, image_name)
