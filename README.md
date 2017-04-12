@@ -52,16 +52,16 @@ The formula can be expressed as:
 Where `X` is the accuracy, `t` is the number of correctly classified samples and `n` is the total number of samples, 
 thus the accuracy will be a number between 0 and 1 representing the percentage of right predictions made.
 
-We will use this to estimate how many emails would be correctly classified per day.
+This can be used to estimate how many emails would be correctly classified per day, for example.
 
 #### Confusion matrix
 
-During development a confusion matrix will be used to identify the exactly point we are failing and help us improve our
+During development a confusion matrix can be used to identify the exactly point we are failing and help us improve our
 classification model.
 
 A Confusion matrix consists of a table in form `N * N` where `N` is the number of possible values or classes. On every
-cell you have the count of a `predicted vs actual` conflict happened with the respective values represented by row and
-column positions.
+cell you have the count of a `predicted vs actual` conflict with the respective values represented by row and column 
+positions.
 
 Example:
 
@@ -70,32 +70,32 @@ Example:
     B   9   20  0   
     C   1   5   7
 
-With the given matrix we can see that `A` was predicted correctly 10 times and there was 2 times it was predicted when
+With the given matrix one can see that `A` was predicted correctly 10 times and there was 2 times it was predicted when
 the actual value was `B`.
 
 ## II. Analysis
 
 ### Data Exploration
 
-One of the best text example datasets available on internet currently is the 
+One of the best raw text example datasets available on internet currently is the 
 [20 newsgroups dataset](http://scikit-learn.org/stable/datasets/twenty_newsgroups.html#newsgroups), freely distributed 
 on scikit-learn python's library.
 
 This dataset contains around 180000 newsgroups posts on 20 subtopics. The dataset itself is already split on train and 
-test parts to be used on leaning models.
+test parts to be used on learning models.
 
-Even this dataset is not composed by emails, it can be used to train and measure a email classifier tool, since Heimdall
-is supposed to use only general text classifying tools. 
+Even this dataset is not composed by emails, it can be used to train and measure a email classifier tool, since the tool
+use only general text classifying tools. 
 
-Scikit-learn has functions to fetch and load the data into python arrays containing raw text and labels related. We 
-start by using the `sklearn.datasets.fetch_20newsgroups` function to retrieve the data this will return a python object
-with two attributes:
+Scikit-learn has functions to fetch and load the data into python arrays containing raw text and labels related. By 
+using the `sklearn.datasets.fetch_20newsgroups` function to retrieve the data one get a python object with two 
+attributes:
  
 * **data**: A list containing raw texts from news posts.
 * **target**: A list where each value is the label of the correspondent entry on the data list.
 
-For Heimdall will be used only between 4 and 6 categories because this would be the average number of departments a
-company will have so we don't need a model that is capable of identifying 20 categories.
+For Heimdall it will be used only between 4 and 6 categories as this would be the average number of departments a 
+company will have. There is no need of a model that is capable of identifying 20 categories.
 
 According to the documentation, the categories are:
 
@@ -120,15 +120,16 @@ According to the documentation, the categories are:
      'talk.politics.misc',
      'talk.religion.misc'
      
-Exploring the data, we can see that the distribution of the categories are like:
+Exploring the dataset, the distribution of the categories is like:
  
 ![feature_dist](https://cloud.githubusercontent.com/assets/13054871/24388181/56fa9172-134f-11e7-9a01-b75a204d6a55.png)
 
-We can see that data is well distributed, just some of the categories like `alt.atheism` and `talk.religion.misc` have 
-less examples, other ones are balanced. We will choose the `sci` categories group to validate our model, since the 
-distribution is well balanced on that classes and the contents will be very similar, the same as in a help desk system.
+This graph show that the data is well distributed, just some of the categories like `alt.atheism` and 
+`talk.religion.misc` have less examples than others. The `sci` categories group will be chosen to validate Heimdall's 
+model since the distribution is well balanced on that classes and the contents will be very similar, the same as a help 
+desk system.
 
-Filtering data to use the chosen ones we end up with:
+Filtering data to use the chosen categories, data end up with:
  
     Size of train data: 2373 samples
     Size of test data: 1579 samples
@@ -136,99 +137,124 @@ Filtering data to use the chosen ones we end up with:
 
 ### Exploratory Visualization
 
-Looking on below image we can see the most repeatable words for 6 arbitrary documents:
+Below image shows the most repeatable words for 6 arbitrary documents:
  
 ![word_count](https://cloud.githubusercontent.com/assets/13054871/24683599/69805bc4-1976-11e7-9ee6-fb733b10db7f.png)
 
-We've found that prepositions and articles like 'the', 'and', 'is', 'in' and etc. are too much bigger than other words 
-in the great majority of the documents. With the exception of Topic 2, all other topics seems to be natural text so this
-will happen with almost any email delivered on the internet today.
+Prepositions and articles like 'the', 'and', 'is', 'in' and etc. appears much more than other words  in the great 
+majority of the documents. With the exception of Topic 2, all other topics seems to be natural text so this will happen 
+with almost any email delivered on the internet today.
 
-It can turn things difficult to classify since this words will appear on every document. To avoid this problem we 
-will analyze a TF-IDF (Term Frequency–Inverse Document Frequency) to find the words that appear only in some documents.
-We will explain the TF-IDF functionality later on this paper.
+It can turn things difficult to classify since it seems that this words will appear on almost every document. To avoid 
+this problem a TF-IDF (Term Frequency–Inverse Document Frequency) can be used to find the words that appear only in few
+documents. The TF-IDF functionality will be explained later on this paper.
 
 ![tfidf](https://cloud.githubusercontent.com/assets/13054871/24684492/c4583d5e-197c-11e7-80a6-35982ec305e3.png)
 
-We can see now that with TF-IDF all words for each topic have changed turning into more specific words, what will
-make possible to identify a document by presence of some of these words.
+With TF-IDF all words for each topic have changed turning into more specific words, this make possible to identify a 
+document by analyzing presence of some of these words.
 
 ### Algorithms and Techniques
 
-In order to achieve his objective Heimdall will use the Bag of Words model, commonly used on natural language processing. One of 
-the great advantages of using this algorithm is the simplicity and extensibility.
- 
- #### Feature extraction algorithms
+In order to achieve his objective Heimdall will use the Bag of Words model, commonly used on natural language processing. 
+One of the great advantages of using this algorithm is the simplicity and extensibility it supports. There are a lot of
+implementations based on this base algorithm.
+
+#### Feature extraction algorithms
 
 A raw text itself is not a good input source for a classifier algorithm. Classification models expect it's input data to
 be something with measurable and comparable values, also called features. What do you can extract from "Hi, 
-I have a problem", for us humans it's simple to say that it seems there is someone with problems, but what a computer
-algorithm can extract from this data? The size? Maybe but how do you classify texts by size? Large, short? That is not
-what we want, we need more.
+I have a problem", for us humans it's simple to say that it seems there is someone with problems but what a computer
+algorithm can extract from this data? The size? Maybe but how to classify texts by size? Large, short? That is not
+the target here.
  
 This is what feature extraction extends for. This algorithms transform raw text documents into a matrix with relevant
 features like the frequency a specific word appears for example.  
 
 There are a lot of variations and with scikit-learn it's simple to do a benchmark through them, so this is what we will 
-do. Bellow you can see a brief explanation of each technique we will measure. Later on 
+do. Bellow you can see a brief explanation of each technique that will be measured. Later on 
 [Data preprocessing](https://github.com/jejung/heimdall#data-preprocessing) section you will find more details of how we
 have applied this techniques on our source dataset.
 
 ##### Count
 
-The Count score is the most simple, it is just measures the frequency each word appears on the text.
+The Count score is the most simple, it is just measures the frequency each word appears on the text, converting raw
+into a matrix with rows representing each document and columns each word. The value on the cell represents the number of
+times a word appears in a document. 
 
 ##### TF-IDF
 
 The Term Frequency - Inverse Document Frequency is more complex, it works giving each word the score as a relation 
-between the term frequency over all documents and the inverse frequency of documents it appears.
+between the term frequency over all documents and the inverse frequency of documents it appears. If a word appears a lot
+on a document, but this is true for a lot of other documents it will have a low score. If it appears more times in a 
+document but does not appear on other documents it will have a great score. 
+
+The result of this operation is also a matrix in the same form, rows for documents and columns for words.
 
 ##### Hashing
 
 Almost the same as the Count approach, but use a token for indexing instead the word itself what save computational
 resources.
-
-All these three implementations result in a matrix of terms and his scores. This matrix can be forwarded to any 
-classification model as all features will be numeric.
-
+ 
 ##### PCA
 
 Principal Component Analysis is an algorithm used to discover which set of features imply on a higher data variance, 
-ranking this way the best features that can be used on a classifier model. Heimdall will choose just N best features to 
-save computational resources on query operations.
+ranking, this way, the best features that can be used on a classifier model. It can be used to save computation 
+resources on training and querying phase of an algorithm if needed. The input of this algorithm is a already processed
+matrix of input features and the result is a matrix of a possibly reduced column count, representing just the top 
+features. 
+
+----
+
+The matrix returning from any of this algorithms can be forwarded to any classification model.
 
 #### Classifier algorithm 
 
 ##### Multinomial Naive Bayes
 
-This algorithm is a implementation of the Naive Bayes algorithm for multinomially distributed data. This algorithm is 
-known to work well with text documents. Even this is designed for receiving a vectorized word-count data it also works
-well with TF-IDF matrices.
+This algorithm is a implementation of Naive Bayes for multinomially distributed data. This algorithm is known to work 
+well with text documents. Even this is designed for receiving a vectorized word-count data it also works with TF-IDF 
+matrices.
 
-It can performs well since it take advantage of probabilities, since the probability of certain words appear on a 
-specific email request type is great, but it needs a lot of training samples.
+Naive Bayes is based on probabilities evaluation, it makes sense for text processing since calculating the probability
+that a text being classified as X if it contains the word B makes possible to calculate the probability of a text being
+X if is true that it contains B. The probability of a text being classified as X can be calculated using the facts for 
+every word known by the model.
+
+One of the drawbacks of this algorithm is that it needs a considerable number of labeled sample data for training.
 
 ##### KNN
 
-The K-Nearest Neighbour classifier works by finding elements that approximate their values, in our scenario it can make
-sense. We can think if we have the same words appearing in two different texts with almost the same frequency so they
-should be talking of the same thing!
+The K-Nearest Neighbour classifier works by finding elements that approximate their values, in this scenario it can make
+sense, if two texts have almost the same words, appearing with the same frequency, it's almost certain that they talk 
+about the same thing.
 
-This algorithm has the advantage of being very fast on training but a bit slow on querying.
+KNN has the advantage of being very fast on training but a bit slow on querying.
 
 ##### SVM
 
-Support Vector Machines is an algorithm that classifies data separating their data points with vectors in some 
-dimensions and calculating their distance to that vector. In order to discover all the different categories, the maximum
-gap between data points will be found, so a point can be classified based on which side of the gap they fall.
+Support Vector Machines classifies data separating their data points with vectors in some dimensions and calculating 
+their distance to that vector. In order to discover all the different categories, the maximum gap between data points 
+will be found, so points can be classified based on which side of the gap they fall.
 
-This algorithm reduce the need for labeled training instances, with     
+This algorithm reduce the need for labeled training instances.
+
+#### Model selection algorithms
+
+#### Cross-Validation
+
+There is a technique called Cross-Validation, it is used to evaluate a specific model with different portions of train 
+data, based on the K-fold system it splits data into K equal sized portions and use them to train and test sequentially.
+The final result will be the average result obtained in each train and test operation.
+
+Scikit-learn has one implementation called `GridSearchCV` where the model is trained using Cross-Validation and 
+different parameter combinations. 
 
 ### Benchmark
 
-Let's do a first checkout of how everything we mentioned applies on our simulated "real world". 
+In this section a first checkout of how everything mentioned applies on our simulated "real world" is presented. 
  
-With a simple script we have executed the combinations of the algorithms mentioned earlier and created a graphic showing
+With a script combinations of the algorithms mentioned earlier were executed and a graph was created showing
 the results:
 
 ![Benchmark](https://cloud.githubusercontent.com/assets/13054871/24840306/4032cb3e-1d41-11e7-9cb1-d6c664b3ec9b.png)
@@ -242,45 +268,72 @@ Bayes with the Count value, but in counter part has the slowest training time.
 
 The Multinomial Naive Bayes algorithm performs very well. It has great scores and small training and test times.
 
-This simple benchmark shows us that in combination with any model we are using the Hashing Vectorizer is not so good, so 
-we will discard it from here through the final.
+This simple benchmark shows that in combination with any model being used the Hashing Vectorizer is not so good, so 
+it will be discarded from here through the final.
+
+Based on these results a minimum of 95% was established as target for Heimdall's accuracy.   
 
 ## III. Methodology
 
 ### Data Preprocessing
 
-As discussed before on Algorithms and Techniques section, for raw text classification we always need some preprocessing.
+As discussed before on Algorithms and Techniques section, for raw text classification there is always the need of some 
+preprocessing step.
 
 The first thing to notice is the time that preprocessing takes, about 4 to 5 seconds on our benchmark. To improve the 
-preprocessing time we've tried to reduce the number of features generated by all vectorizers to only 150 but that 
-dropped the performance of all models to below the 50% mark. The time taken was only a little greater than 1 second, so 
-we con continue from here.
+preprocessing time the number of features generated by all vectorizers was reduced to only 150 but that  dropped the 
+performance of all models to below the 50% mark.
 
-To improve our processed data we've tried to use a PCA algorithm so we could choose the best features in a proper time. 
+To improve processed data a PCA algorithm was experimented to choose the best features with a proper time. 
 The idea behind that was to let the vectorizers generate more features and let a PCA decide what features to use, but
 that was so slow we could not even measure.
 
-We have found that when working with sparse matrices the PCA algorithm is very slow because for every feature it needs
-to center all data points around. As the matrices returned by a raw text vectorized are known to be very large we have 
-gave up. We have tried also the NMF - Non-negative Matrix Factorization, an algorithm that can be used for 
-dimensionality reduction, also slow and the Truncated Singular Value - TruncatedSVD on scikit-learn - that performs a 
-linear dimensionality reduction using the truncated singular value decomposition, contrary to PCA there is no need to 
-center data on this algorithm, even that this algorithm was faster, he can return negative values, what is invalid for 
-working with Naive Bayes based algorithms and there was no significant gain working with other classifiers, so we have 
-discarded this algorithm too.
+When working with sparse matrices PCA is very slow because for every feature it needs to center all data points around.
+As matrices returned by a raw text vectorized are known to be very large PCA was taken off. 
 
-Thinking better of our task here, there is no need to a second algorithm of dimensionality reduction, since the feature
-extraction algorithms we are using can do that!
+The NMF - Non-negative Matrix Factorization, an algorithm that can be used for dimensionality reduction, was also tested 
+with slow results. 
 
-For example, CountVectorizer has a parameter called `max_features` that causes the result matrix to have only a maximum
-of `n` features. The features chosen will be the `n` top words that appear with more frequency, exactly what we want,
-just the best. For any other vectorizer we are using, the parameter is the same.
+Another test was with Truncated Singular Values - `TruncatedSVD` on scikit-learn - that performs a linear dimensionality 
+reduction using truncated singular value decomposition where, contrary to PCA, there is no need to center data. Even 
+that this algorithm was faster, it can return negative values what is invalid for working with Naive Bayes based 
+algorithms and there was no significant gain with other classifiers, so this algorithm was discarded too.
+
+Thinking better, there is no need to a second algorithm of dimensionality reduction, since the feature extraction 
+algorithms being used can do that!
+
+For example, `CountVectorizer` has a parameter called `max_features` that limits the size of the result matrix to a 
+maximum of `n` features. The features chosen will be the `n` top words that appear with more frequency, the same 
+behaviour as expected with PCA.
 
 ### Implementation
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
+
+For implementation it was decided to focus only on one model, since availing all models take too many time. Because that
+execution time is important considering that Heimdall will work with a large amount of data, Multinomial Naive Bayes was
+chosen along with a Count Vectorizer, since them work better together.
+
+A EmailClassifier class was created to wrap all machine learning implementation. This makes easy to add new 
+integrations with other data providers, like email tools as GMail or help desk systems as Zendesk.
+
+Starting with the EmailClassifier class definition, there are two methods: `train` and `classify`. 
+ 
+The `train` method will receive historical data as raw email bodies and their respective labels, using this data to fit
+a MultinomialNB model that will be used later on incoming email classification.
+
+Here is where GridSearchCV come in. A machine learning is almost unpredictable, it can perform well with a dataset and 
+the same model can perform badly with another dataset. Heimdall is intended to use a lot of different datasets at least 
+one per user so each dataset is tested with different configurations for the model and the best one is chosen during the
+training phase.
+
+The `classify` method will receive new data as raw email bodies and use the already trained model to classify each email
+text.
+
+A `train` operation can be slow, but it only need to be executed once, after that Heimdall will persist the trained 
+model using scikit-learn's builtin persistence library and for each request load the persisted model without having to 
+train it again. Also, one could want to re-train an already working model in order to improve the performance of the 
+model with items badly classified being fixed.
+ 
+
 
 ### Refinement
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
