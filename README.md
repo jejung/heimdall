@@ -332,8 +332,9 @@ A `train` operation can be slow, but it only need to be executed once, after tha
 model using scikit-learn's builtin persistence library and for each request load the persisted model without having to 
 train it again. Also, one could want to re-train an already working model in order to improve the performance of the 
 model with items badly classified being fixed.
- 
 
+Two methods, `save_to_file` and `load_from_file` control the persistence feature. The trained vectorized is stored along
+with the classifier.
 
 ### Refinement
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
@@ -341,6 +342,30 @@ In this section, you will need to discuss the process of improvement you made up
 - _Is the process of improvement clearly documented, such as what techniques were used?_
 - _Are intermediate and final solutions clearly reported as the process is improved?_
 
+The first implementation have used default classifier and vectorizer parameters. The performance was as seen on initial 
+benchmark a 92.3% accuracy.
+   
+Using cross-validation to choose the best classifier we have improved accuracy to over 93.98%. `alpha` parameter is 
+being tested with 0%, 25%, 50%, 75% and 100% values. This parameter controls additive smoothness for data. For this 
+example data preferred value seems to be 75% what implies that the smoothing algorithm was cutting off important data.
+
+Other parameter used on cross validation was `fit_prior` that controls if the classifier should lear the classes prior
+from the train phase or not. If not learning from data, it will use a uniform distribution for classes priority. For
+this example data preferred value is to learn form data.
+ 
+All the non-used parameters are being maintained on train phase because even these parameters are excellent for the 20
+news group dataset it can vary for another data being used on future.
+ 
+The next step was to refine vectorizer parameters. For Count Vectorizer there are two parameters being passed. The first
+one is `stop_words` as `english`, this helps vectorizer build his vocabulary. Since example data is in english this 
+parameter makes sense. The second is `max_df`, this parameter controls output vocabulary to have only words with a 
+document frequency lesser than given threshold, in other words it will return only words that appears in some documents. 
+As we have seen before, using TF-IDF we could choose only relevant words from a document, validating its document 
+frequency, as we have chosen for Count vectorizer we have lost this information, but using this parameter you can 
+simulate that. For this example data the best value was 50%, words that appear in more than a half of documents we 
+ignore.
+
+These adjusts to vectorizer improved accuracy to above 94.44%.
 
 ## IV. Results
 _(approx. 2-3 pages)_
@@ -351,6 +376,8 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
 - _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
 - _Can results found from the model be trusted?_
+
+
 
 ### Justification
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:

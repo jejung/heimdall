@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, make_scorer
 from sklearn.model_selection import GridSearchCV
+from sklearn.externals import joblib
 
 
 class EmailClassifier:
@@ -12,7 +13,7 @@ class EmailClassifier:
 
     def __init__(self):
         self.clf = MultinomialNB()
-        self.vectorizer = CountVectorizer()
+        self.vectorizer = CountVectorizer(max_df=.5, stop_words='english')
         self.scorer = make_scorer(accuracy_score)
 
     def train(self, emails, labels):
@@ -25,8 +26,8 @@ class EmailClassifier:
         y = labels
 
         params = {
-            'alpha': [.0, .5, 1.],
-            'fit_prior': [True, False]
+            'alpha': (0, .25, .5, .75, 1.),
+            'fit_prior': (True, False),
         }
 
         grid = GridSearchCV(self.clf, params, scoring=self.scorer)
@@ -41,3 +42,21 @@ class EmailClassifier:
         """
         x = self.vectorizer.transform(emails)
         return self.clf.predict(x)
+
+    def save_to_file(self, file_name):
+        """
+        Saves the trained classifier to a file. 
+        :param file_name: 
+        :return: 
+        """
+        joblib.dump({'clf': self.clf, 'vec': self.vectorizer}, file_name)
+
+    def load_from_file(self, file_name):
+        """
+        Load the trained classifier from given file.
+        :param file_name: 
+        :return: 
+        """
+        objs = joblib.load(file_name)
+        self.clf = objs['clf']
+        self.vectorizer = objs['vec']
