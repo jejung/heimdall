@@ -408,6 +408,15 @@ In this section, you will need to provide discussion as to how one aspect of the
 - _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
 - _If you used your final solution as the new benchmark, do you think an even better solution exists?_
 
+
+### References
+
+1. Scikit-learn documentation: http://scikit-learn.org/stable/index.html
+1. Naive Bayes Classifier Wikipedi page: https://en.wikipedia.org/wiki/Naive_Bayes_classifier
+1. Stop words Wikipedia page: https://en.wikipedia.org/wiki/Stop_words
+1. Additive smoothing Wikipedia page: https://en.wikipedia.org/wiki/Additive_smoothing
+1. Ranks NL Webmaster Tools: http://www.ranks.nl/
+
 -----------
 
 **Before submitting, ask yourself. . .**

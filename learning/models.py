@@ -4,6 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, make_scorer
 from sklearn.model_selection import GridSearchCV
 from sklearn.externals import joblib
+from .stop_words import ENGLISH
 
 
 class EmailClassifier:
@@ -11,9 +12,13 @@ class EmailClassifier:
     An email classifier object.
     """
 
-    def __init__(self):
+    def __init__(self, stop_words=ENGLISH):
+        """
+        
+        :param stop_words: 
+        """
         self.clf = MultinomialNB()
-        self.vectorizer = CountVectorizer(max_df=.5, stop_words='english')
+        self.vectorizer = CountVectorizer(max_df=.5, stop_words=stop_words)
         self.scorer = make_scorer(accuracy_score)
 
     def train(self, emails, labels):
