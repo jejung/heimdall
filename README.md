@@ -337,10 +337,6 @@ Two methods, `save_to_file` and `load_from_file` control the persistence feature
 with the classifier.
 
 ### Refinement
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
 
 The first implementation have used default classifier and vectorizer parameters. The performance was as seen on initial 
 benchmark a 92.3% accuracy.
@@ -357,8 +353,20 @@ All the non-used parameters are being maintained on train phase because even the
 news group dataset it can vary for another data being used on future.
  
 The next step was to refine vectorizer parameters. For Count Vectorizer there are two parameters being passed. The first
-one is `stop_words` as `english`, this helps vectorizer build his vocabulary. Since example data is in english this 
-parameter makes sense. The second is `max_df`, this parameter controls output vocabulary to have only words with a 
+one is `stop_words`, this helps vectorizer build his vocabulary. Scikit-lean has an english pre built list for stop 
+words. As Heimdall is looking for a more internationalized fashion a `stop_words` parameter was created on 
+`EmailClassifier` class. This parameter will be forwarded to Count Vectorizer. 
+
+Searching the internet for a Portuguese list of stop words one can find the Ranks NL Webmaster Tools web page where 
+there are a lot of stop words lists for a lot of different languages. The Portuguese list was downloaded and included
+on a model called `stop_words` along with the `models` module. This module was created as a stop words repository 
+including currently three lists, `PORTUGUESE`, `ENGLISH` and `ANY`. `ENGLISH` is an alias for the scikit-learn's builtin
+list. `PORTUGUESE` is the downloaded list and `ANY` is a combination of both.
+
+This way if input data is english or portuguese there is no need to worry about, we can use `ANY` stop words and the 
+algorithm should perform well.
+
+The second is `max_df`, this parameter controls output vocabulary to have only words with a 
 document frequency lesser than given threshold, in other words it will return only words that appears in some documents. 
 As we have seen before, using TF-IDF we could choose only relevant words from a document, validating its document 
 frequency, as we have chosen for Count vectorizer we have lost this information, but using this parameter you can 
@@ -367,17 +375,23 @@ ignore.
 
 These adjusts to vectorizer improved accuracy to above 94.44%.
 
+GMail integration was added so Heimdall is ready to test. If user was using Google's Inbox Application so his emails are
+already classified in categories. Heimdall will use this data to learn from your emails. Authentication is done via 
+OAuth 2.0, when needed, Heimdall will open user's browser on Google's authentication page, then user can decide if 
+accept Heimdall open his messages or not.
+
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
 
+Heimdall was validated using 20 news groups dataset and performed very well. How would it perform against unknown data?
+To answer this question, Heimdall was used to classify my own GMail messages. Unfortunately this is my private data 
+and could not be distributed along side with this program.
 
+Just for the sake of testing it, we have just used a snippet of any message, GMail APIs already provide a way to gey 
+only a relevant snippet for each message instead of the entire message itself.
+
+A 5000 messages sample was used to train and test Heimdall. 
 
 ### Justification
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
@@ -412,10 +426,11 @@ In this section, you will need to provide discussion as to how one aspect of the
 ### References
 
 1. Scikit-learn documentation: http://scikit-learn.org/stable/index.html
-1. Naive Bayes Classifier Wikipedi page: https://en.wikipedia.org/wiki/Naive_Bayes_classifier
+1. Naive Bayes Classifier Wikipedia page: https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 1. Stop words Wikipedia page: https://en.wikipedia.org/wiki/Stop_words
 1. Additive smoothing Wikipedia page: https://en.wikipedia.org/wiki/Additive_smoothing
 1. Ranks NL Webmaster Tools: http://www.ranks.nl/
+1. GMail API Documentation: https://developers.google.com/gmail/
 
 -----------
 
