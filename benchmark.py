@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 from utils import size_mb
 from time import time
@@ -106,7 +107,7 @@ def plot_results(results, image_name):
     plt.show()
 
 
-mode = 'datapreprocessing'
+mode = sys.argv[1] if len(sys.argv) > 1 else 'benchmark'
 
 if mode == 'benchmark':
     results = []

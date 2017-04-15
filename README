@@ -1,0 +1,21 @@
+This is the Heimdall project development repository.
+
+Preparing:
+
+    All requirements are described on requirements.txt file. Just run pip install --upgrade -r requirements.txt
+    A virtualenv can be used if desired.
+
+Contents
+
+    * exploration.py - Initial data exploration an visualization. This script can be run as is to generate plots.
+    * benchmark.py - Initial benchmark and pre-processing methods selection script. This script can be run passing the
+    mode as argument 'benchmark' for benchmark part or 'datapreprocessing' as pre-processing selection. Notice that this
+    is the final state of the script, for datapreprocessing an error will be thrown and this is expected since the last
+    thing validated was the TruncatedSVD vectorizer that does not work with MultinomialNB
+    * tests.py - Unit tests to ensure performance validation and functionality. Can be run as python -m unittest tests.py
+    * utils.py - A collection of util functions used on benchmarks and validations
+    * validation.py - The GMail validation script. Can be run as is, will open the browser and ask for authentication.
+    * data - Data folder with images and data needed for GMail authentication (I think this should to be private but I thrust Udacity)
+    * learning/models.py - Learning models developed module
+    * learning/stop_words.py - Stop words repository module
+    * plugins/gmail.py - GMail integration.
