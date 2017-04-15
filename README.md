@@ -394,7 +394,7 @@ These adjusts to vectorizer improved accuracy to above 94.44%.
 
 Heimdall was validated using 20 news groups dataset and performed very well. How would it perform against unknown data?
 To answer this question, Heimdall was used to classify my own GMail messages. These messages are in both portuguese and
-english language and are already classified by Google in 5 different categories Promotions, Updates, Social, Personal 
+english language and are already classified by Google in five different categories Promotions, Updates, Social, Personal 
 and Forums.
 Unfortunately this data is private and could not be distributed along side with this program.
 
