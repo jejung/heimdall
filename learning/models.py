@@ -31,7 +31,7 @@ class EmailClassifier:
         y = labels
 
         params = {
-            'alpha': (0, .25, .5, .75, 1.),
+            'alpha': (.25, .5, .75, 1.),
             'fit_prior': (True, False),
         }
 
