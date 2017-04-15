@@ -385,42 +385,60 @@ accept Heimdall open his messages or not.
 ### Model Evaluation and Validation
 
 Heimdall was validated using 20 news groups dataset and performed very well. How would it perform against unknown data?
-To answer this question, Heimdall was used to classify my own GMail messages. Unfortunately this is my private data 
-and could not be distributed along side with this program.
+To answer this question, Heimdall was used to classify my own GMail messages. These messages are in both portuguese and
+english language and are already classified by Google in 5 different categories Promotions, Updates, Social, Personal 
+and Forums.
+Unfortunately this data is private and could not be distributed along side with this program.
 
-Just for the sake of testing it, we have just used a snippet of any message, GMail APIs already provide a way to gey 
-only a relevant snippet for each message instead of the entire message itself.
+Just for the sake of testing it we have used a snippet of messages, GMail APIs already provides a way to get only a 
+short but relevant part for each message instead of the entire message itself.
 
-A 5000 messages sample was used to train and test Heimdall. 
+The `ANY` stop words options was used for all tests.
+
+A 1100 messages sample was used to train and test Heimdall for the first time, he performed just about 50% of accuracy.
+The second sample was of 2098 messages and the score was up to 89%.
 
 ### Justification
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
 
+A minimum accuracy of 95% was established for 20 news group dataset and the perform obtained from our validation was of
+approximately 94.5%. The goal was not reached but this was an acceptable result, maybe with a bigger example dataset 
+higher results would be reached.
+
+For validation step the dataset included portuguese and english messages and even that the model performed almost 90% of
+accuracy.
+
+Considering this results Heimdall maybe classified as a good email classifier tool.
 
 ## V. Conclusion
-_(approx. 1-2 pages)_
 
 ### Free-Form Visualization
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+
+The model presented here is very simple, with very small training and querying times. With a little effort it can turn
+into a good email classifying tool.
+
+One thing that is notable is the adaptation to new data, even it was developed looking for clearly defined and well
+elaborated texts, availing it over a normal inbox, where the text content is unknown and unaddressed it shows a very 
+good performance for a small size sample.
+ 
 
 ### Reflection
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- _Have you thoroughly summarized the entire process you used for this project?_
-- _Were there any interesting aspects of the project?_
-- _Were there any difficult aspects of the project?_
-- _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
+
+Heimdall works. It would be possible to use Heimdall as a triage automation on a Help Desk sector. 
+
+One thing that this project show us is that natural text processing is a bit hard. There is a need of a good 
+preprocessing phase and well chosen training datasets for good results.
+
+The Multinomial Naive Bayes was the great key to the victory, a very good starting point for any project that involves 
+natural text processing.
 
 ### Improvement
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
+
+As a improvement, we could try to apply a ensemble learning algorithm combining results from our actual solution and a 
+Linear SVC  implementation. This can lead to a more robust solution with more precise results and maybe the 95% 
+threshold is reached.
+
+Aside from the learning part, the rest of the project should be improved, as obtaining the entire message as a 
+training source when using GMail. New email providers or help desk systems integrations and etc.
 
 
 ### References
@@ -431,15 +449,3 @@ In this section, you will need to provide discussion as to how one aspect of the
 1. Additive smoothing Wikipedia page: https://en.wikipedia.org/wiki/Additive_smoothing
 1. Ranks NL Webmaster Tools: http://www.ranks.nl/
 1. GMail API Documentation: https://developers.google.com/gmail/
-
------------
-
-**Before submitting, ask yourself. . .**
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?

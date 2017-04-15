@@ -4,7 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, make_scorer
 from sklearn.model_selection import GridSearchCV
 from sklearn.externals import joblib
-from .stop_words import ENGLISH
+from .stop_words import ANY
 
 
 class EmailClassifier:
@@ -12,7 +12,7 @@ class EmailClassifier:
     An email classifier object.
     """
 
-    def __init__(self, stop_words=ENGLISH):
+    def __init__(self, stop_words=ANY):
         """
         
         :param stop_words: 
