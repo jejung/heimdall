@@ -285,7 +285,7 @@ classification and one for solving the problem, without mentioning that a human 
 
 ### Data Preprocessing
 
-As discussed before on Algorithms and Techniques section, for raw text classification there is always the need of some 
+As discussed before on Algorithms and Techniques section, for raw text classification there is always the need of a 
 preprocessing step.
 
 The first thing to notice is the time that preprocessing takes, about 4 to 5 seconds on our benchmark. In an attempt to 
@@ -307,10 +307,28 @@ reduction using truncated singular value decomposition where, contrary to PCA, t
 that this algorithm was faster, it can return negative values what is invalid for working with Naive Bayes based 
 algorithms and there was no significant gain with other classifiers, so this algorithm was discarded too.
 
-Thinking better, there is no need to a second algorithm of dimensionality reduction, since the feature extraction 
-algorithms being used can do that! For example, `CountVectorizer` has a parameter called `max_features` that limits the 
-size of the result matrix to a maximum of `n` features. The features chosen will be the `n` top words that appear with 
-more frequency, the same behaviour as expected with PCA.
+Thinking better, there is no need of a second dimensionality reduction algorithm, since feature extraction algorithms 
+being used can do that! For example, `CountVectorizer` has a parameter called `max_features` that limits the size of the 
+result matrix to a maximum of `n` features. The features chosen will be the `n` top words that appear with more 
+frequency, the same behaviour as expected with PCA.
+
+The final solution applies the preprocessing step on two phases of the program's lifecycle.
+ 
+The first one is called of training phase and is executed the first time the program runs. Steps are summarized below:
+
+1. Historical messages already classified are obtained from chosen integration service;
+1. Data is separated as a list of raw text bodies and a list of target labels;
+1. Data is shuffled and a training sample is created;
+1. Training sample and labels are provided to a feature extraction algorithm turning into a feature matrix;
+1. Resulting feature matrix is used to train a classifier;
+1. Model is persisted as is;
+
+When done, the next step is to classify incoming messages, this is called the executing phase. Steps for this phase are:
+
+1. New message received from integration service;
+1. Model is loaded from file;
+1. Raw text is extracted and provided to model's feature extraction algorithm turning into a feature matrix;
+1. Resulting feature matrix is used on classifier.
 
 ### Implementation
 
