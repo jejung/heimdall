@@ -24,7 +24,7 @@ def store_messages(force_search=False):
                 samples += 1
 
 if __name__ == '__main__':
-    store_messages(False)
+    store_messages(force_search=False)
     messages_df = pandas.read_csv('data/gmail_samples.csv', encoding='utf-8')
     messages = messages_df['body'].values.astype('U')
     labels = messages_df['label'].values.astype('U')

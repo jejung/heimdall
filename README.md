@@ -51,7 +51,7 @@ common method used to measure performance on classification models.
 
 The formula can be expressed as:
 
-    X = t / n * 100
+    X = t / n
     
 Where `X` is the accuracy, `t` is the number of correctly classified samples and `n` is the total number of samples, 
 thus the accuracy will be a number between 0 and 1 representing the percentage of right predictions made.
@@ -443,6 +443,16 @@ good performance for a small sized sample.
 Another thing to mention is the time performance. It is very fast to analyze large documents, about 800 KB/s for 
 training and 4.5 MB/s for classifying.
 
+For comparing the final solution to the Count vectorizer benchmark initial solutions, a little changes on our initial
+benchmark framework was done to accept calculate the preprocessing time as training and testing time for all models, 
+because the final solution encapsulates this part, making it hard to measure. The results are shown below:
+
+![Comparision](https://cloud.githubusercontent.com/assets/13054871/25161397/14b11f08-2492-11e7-9252-367475c8f288.png)
+
+This results shows a slightly better performance from the final version comparing to other Multinomial models.
+ 
+Training time shown here includes Cross validation step but even that it is still smaller than other solutions presented.
+
 ### Reflection
 
 Heimdall works. It would be possible to use Heimdall as a triage automation on a Help Desk sector. 
@@ -455,7 +465,7 @@ involves natural text processing.
 
 ### Improvement
 
-As a improvement, we could try to apply a ensemble learning algorithm combining results from actual solution and a 
+As a improvement, we could try to apply an ensemble learning algorithm combining results from actual solution and a 
 Linear SVC  implementation for example. This can lead to a more robust solution with more precise results and maybe the 
 95% threshold would be elevated.
 

@@ -19,3 +19,4 @@ Contents
     * learning/models.py - Learning models developed module
     * learning/stop_words.py - Stop words repository module
     * plugins/gmail.py - GMail integration.
+    * conclusion.py - Conclusion benchmark comparision between initial and final implementations.
