@@ -407,8 +407,7 @@ A 1100 messages sample was used to train and test Heimdall for the first time, h
 
 A second sample of 2098 messages was used and the score was up to 89%.
 
-This confirms the previously shown advertisement about the number of samples. It seems that Heimdall will need to use a 
-dataset with at least 2500 samples to have a great performance. The final validation result can be inspected bellow:
+The final validation result can be inspected bellow:
 
     Train data size: 1679 samples
     Test data size: 420 samples
@@ -420,14 +419,12 @@ dataset with at least 2500 samples to have a great performance. The final valida
 
 ### Justification
 
-A minimum accuracy of 95% was established for 20 news group dataset and the performance obtained from validation was of 
-approximately 94.5%. The goal was not reached but this was an acceptable result, maybe with a bigger example dataset 
-higher results would be reached.
+Results presented on model validation confirm initial advertisement about the number of samples needed for Naive Bayes 
+solutions. It seems that Heimdall will need to use a dataset with at least 2500 samples to present a good performance 
+(above 90%).
 
-For validation step the dataset have included portuguese and english messages and even that the model performed almost 
-90% of accuracy.
-
-Considering this results Heimdall maybe classified as a good email classifier tool.
+Present solution was not able to cross the defined threshold of an 95% accuracy using the 20 news groups dataset. The 
+maximum result obtained was of a 94.44%, very close from expected value. 
 
 ## V. Conclusion
 
@@ -455,20 +452,26 @@ presented.
 
 ### Reflection
 
-Using a Multinomial Naive Bayes with a word frequency matrix for text processing can give you very good results from 
-beginning, but a little effort is needed if you want a improved version.
+The process used on this project can be summarized as:
 
-Cross validation algorithms as `GridSearchCV` used here are very important to ensure the parameters given to a model are
-the best possible. It makes easy to test a lot of changes on your code.
+1. The problem was identified;
+1. A public dataset was found;
+1. A benchmark was created using some possible implementations;
+1. A target threshold was defined;
+1. Needed preprocessing steps were defined;
+1. Best combination pair of preprocessing step / classifier was chosen;
+1. Chosen pair was tested and improved until a satisfying result was obtained;
+1. Support for GMail data extraction was added; 
+1. Final solution was validated using real data;
+1. Support for model serialization/retraining was added;
 
-Here Heimdall use some tricks as cutting off words that are used with more frequency on training data and a pre-built 
-list of more repeatable words for each language (currently only english and portuguese). It takes a certain time to find
-these combinations as cross validation algorithms don't take into account preprocessing steps, it requires a lot of 
-trial and error till the right values are found.
+The most challenging steps were certainly to chose the model to be validated as very good performances were presented on
+first benchmark and find a good combination of feature extraction and classifier parameters to improve overall 
+performance over the example dataset. As the model itself already had a good performance without any customization it 
+was hard to improve results even more.
 
-Sometimes an improvement is not possible due to computational resources or available time. In this project the PCA 
-solution was discarded due to very slow execution time, for example. Other times an improvement done can br ineffective 
-depending on the scenario applied.
+Being able to validate a final solution using my own private data was very interesting and satisfactory, revealed what 
+this solution is capable of doing and that it's an almost complete solution.  
 
 ### Improvement
 
