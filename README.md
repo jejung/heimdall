@@ -398,7 +398,7 @@ english language and are already classified by Google in five different categori
 and Forums.
 Unfortunately this data is private and could not be distributed along side with this program.
 
-Just for the sake of testing it we have used a snippet of each message, GMail APIs already provides a way to get only a 
+Just for the sake of testing it we have used a snippet of each message, GMail APIs already provide a way to get only a 
 short but relevant part for each message instead of the entire message itself.
 
 The `ANY` stop words options was used for those tests.
@@ -443,25 +443,32 @@ good performance for a small sized sample.
 Another thing to mention is the time performance. It is very fast to analyze large documents, about 800 KB/s for 
 training and 4.5 MB/s for classifying.
 
-For comparing the final solution to the Count vectorizer benchmark initial solutions, a little changes on our initial
-benchmark framework was done to accept calculate the preprocessing time as training and testing time for all models, 
-because the final solution encapsulates this part, making it hard to measure. The results are shown below:
+To compare the final solution with the benchmark initial solutions, little changes on the benchmark framework were 
+done to accept calculate the preprocessing time as training and testing time for all models, because the final solution 
+encapsulates this step, making it hard to measure separately. Results can be seen below:
 
 ![Comparision](https://cloud.githubusercontent.com/assets/13054871/25161397/14b11f08-2492-11e7-9252-367475c8f288.png)
 
-This results shows a slightly better performance from the final version comparing to other Multinomial models.
- 
-Training time shown here includes Cross validation step but even that it is still smaller than other solutions presented.
+This plot shows a slightly better performance from the final version comparing to other models. Training time shown here 
+includes also the cross validation step for final solution but even that it is still smaller than other solutions 
+presented.
 
 ### Reflection
 
-Heimdall works. It would be possible to use Heimdall as a triage automation on a Help Desk sector. 
+Using a Multinomial Naive Bayes with a word frequency matrix for text processing can give you very good results from 
+beginning, but a little effort is needed if you want a improved version.
 
-One thing that this project show us is that natural text processing is a bit hard. There is a need of a good 
-preprocessing phase and well chosen training datasets for good results.
+Cross validation algorithms as `GridSearchCV` used here are very important to ensure the parameters given to a model are
+the best possible. It makes easy to test a lot of changes on your code.
 
-The Multinomial Naive Bayes was the great key to the victory here, a very good starting point for any project that 
-involves natural text processing.
+Here Heimdall use some tricks as cutting off words that are used with more frequency on training data and a pre-built 
+list of more repeatable words for each language (currently only english and portuguese). It takes a certain time to find
+these combinations as cross validation algorithms don't take into account preprocessing steps, it requires a lot of 
+trial and error till the right values are found.
+
+Sometimes an improvement is not possible due to computational resources or available time. In this project the PCA 
+solution was discarded due to very slow execution time, for example. Other times an improvement done can br ineffective 
+depending on the scenario applied.
 
 ### Improvement
 
