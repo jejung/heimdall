@@ -453,7 +453,7 @@ the 20 news groups dataset.
 My private email data was not used on the first benchmark, but availing the accuracy of 89.05% considering that just a 
 snippet of the messages was used and there was just a limited size dataset it can be considered a very good result too. 
 
-The execution time is inside of the expectation. It takes minus than a second to train and test a dataset with 2000 
+The execution time is inside of the expectation. It take minus than a second to train and test a dataset with 2000 
 samples.
 
 The 95% threshold was not reached but overall this solution can be considered and working solution. It solves the 
