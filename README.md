@@ -288,7 +288,8 @@ These results shows that some default implementations already work very well wit
 Bayes and the Linear Support Vector Machines for example. The best performance is approximately 93.2% from Multinomial Naive Bayes combined
 with the Count vectorizer. 
 
-The goal for this project is improve this accuracy to at least 95% using one combination of feature extractor/model. 
+The goal for this project is improve this accuracy to at least 95% using one combination of feature extractor/model to 
+be considered as an optimal email classification tool. 
 
 ## III. Methodology
 
@@ -446,12 +447,17 @@ The final validation result can be inspected bellow:
 
 ### Justification
 
-Results presented on model validation confirm initial advertisement about the number of samples needed for Naive Bayes 
-solutions. It seems that Heimdall will need to use a dataset with at least 2500 samples to present a good performance 
-(above 90%).
+Comparing this final solution to the initial benchmark there was a small accuracy improvement from 93.2% to 94.44% using
+the 20 news groups dataset.
 
-Present solution was not able to cross the defined threshold of an 95% accuracy using the 20 news groups dataset. The 
-maximum result obtained was of a 94.44%, very close from expected value. 
+My private email data was not used on the first benchmark, but availing the accuracy of 89.05% considering that just a 
+snippet of the messages was used and there was just a limited size dataset it can be considered a very good result too. 
+
+The execution time is inside of the expectation. It takes minus than a second to train and test a dataset with 2000 
+samples.
+
+The 95% threshold was not reached but overall this solution can be considered and working solution. It solves the 
+problem even not being an optimal solution.
 
 ## V. Conclusion
 
