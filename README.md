@@ -166,6 +166,9 @@ a previously chosen metric.
 One of the great advantages of using this model is the simplicity and extensibility it supports. There are a lot of
 implementations based on it.
 
+A lot of algorithms combinations were availed on this project. The solution will need of at least two, a feature 
+extraction algorithm and a learning classifier.
+
 #### Feature extraction algorithms
 
 A raw text itself is not a good input source for a classifier algorithm. Classification models expect it's input data to
@@ -177,7 +180,6 @@ the target labels here.
 This is what feature extraction extends for. Algorithms that transform raw text documents into matrices with relevant
 features like the frequency a specific word appears for example.  
 
-There are a lot of variations and with scikit-learn it's simple to do a benchmark through them, so this will be done. 
 Bellow you can see a brief explanation of each technique that will be measured. Later on Data preprocessing section you 
 will find more details of how this techniques were applied on source datasets.
 
@@ -213,44 +215,61 @@ features.
 
 The matrix returning from any of those algorithms can be forwarded to any classification model.
 
-#### Classifier algorithms 
+#### Learning classifier models
+
+There were some classifier models validated on this project. As these models are complex to explain, the principal model
+being used will be explained in details and after the rest of them will be enumerated with some characteristics 
+explaining why they were validate.
 
 ##### Multinomial Naive Bayes
+
+This is the main model being use on this project.
 
 This algorithm is a implementation of Naive Bayes for multinomially distributed data. This algorithm is known to work 
 well with text documents. Even this is designed for receiving a vectorized word-count data it also works with TF-IDF 
 matrices.
 
-Naive Bayes is based on probabilities evaluation, it makes sense for text processing since calculating the probability
-that a text being classified as X if it contains the word B makes possible to calculate the probability of a text being
-X if is true that it contains B. The probability of a text being classified as X can be calculated using the facts for 
-every word known by the model.
+Naive Bayes is based on probabilities evaluation. The main advantage of this approach is that any feature is evaluated 
+independently from other features. Each feature contribute individually to the overall probability of a sample entry X 
+be associated with the class Y. 
+ 
+On text categorization it can be translated to "Given that a text has the words 'team', 'players' and 'match' what is 
+the probability of this text being classified as sports?" for example. Each word will have a contribution probability 
+associated to the label sports and the total probability of this texts being for sports is the combination of all his 
+words probability being associated with sports. A text can talk about sports and not mention one of those words, but as
+features are independent he can be classified as well.
 
-The main drawback of this algorithm is that it needs a considerable number of labeled sample data for training.
+It takes advantage from the Naive Bayes rule and can use the Maximum Likelihood Estimation leading to a very fast 
+training step, without the need of doing a iterative approximation, which can take too many time.
+
+By definition, if a combination of word/label is not present on training dataset their probability will be set to zero 
+and can wipe out all information in the other probabilities when they are multiplied. This is the reason this algorithm 
+needs a considerable number of labeled sample data for training. It is possible to add a "pseudocount" to avoid a term
+having value. This technique is called smoothing.
+
+----
+
+Other evaluated models were:
 
 ##### KNN
 
-The K-Nearest Neighbour classifier works by finding elements that approximate their values, in this scenario it can make
-sense if two texts have the same words appearing with the same frequency, it's almost certain that they talk about the 
-same thing.
-
-KNN has the advantage of being very fast on training phase but is a bit slow on prediction phase.
+K-Nearest Neighbors is an algorithm that uses data proximity to correlate different examples. An object is classified as
+the majority vote of its neighbors. This algorithm is one of the simpler machine learning algorithms and was considered 
+because it's low training time.
 
 ##### SVM
 
-Support Vector Machines classifies data separating their data points with vectors in some dimensions and calculating 
-their distance to that vector. In order to discover all the different categories, the maximum gap between data points 
-will be found, so points can be classified based on which side of the gap they fall.
-
-This algorithm reduce the need for labeled training instances but is a bit slow on both, training and predicting phases.
+Support Vector Machines represents example data as points in space mapped so samples of different categories are divided
+by a clear gap that is as wide as possible. Test data will be mapped to the same space and classified depending on the 
+side of the gap they fall. This algorithm was considered because it can reduce the need of labeled training instances.
 
 #### Model selection algorithms
 
 #### Cross-Validation
 
-There is a technique called Cross-Validation, it is used to evaluate a specific model with different portions of train 
-data, based on the K-fold system it splits data into K equal sized portions and use them to train and test the model
-sequentially. The final result will be the average result obtained in each train and test operation.
+Cross-Validation is used to evaluate a specific model with different portions of train data, based on the K-fold system 
+it splits data into K equal sized portions and use them to train and test the model sequentially. The final result will 
+be the average result obtained in each train and test operation.
 
 Scikit-learn has one implementation called `GridSearchCV` where the model is trained using Cross-Validation and 
 different parameter combinations. 
