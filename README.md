@@ -275,30 +275,20 @@ Scikit-learn has one implementation called `GridSearchCV` where the model is tra
 different parameter combinations. 
 
 ### Benchmark
-
-In this section a first checkout of how everything mentioned applies on our "simulated real world" is presented. 
  
-Using a script, combinations of the algorithms mentioned earlier were executed and a graph was created showing
-the results:
+The 20 news group dataset was used to analyze each combination of feature extractor/model possible helping to 
+determine what model and feature extraction algorithm use.
+
+For each pair the training and testing times and the accuracy metric were measured and compared. Times are scaled to a 
+value from 0 to 1 as 1 representing the max time taken. Below you can see the resulting graph:
 
 ![Benchmark](https://cloud.githubusercontent.com/assets/13054871/24840306/4032cb3e-1d41-11e7-9cb1-d6c664b3ec9b.png)
 
-As predicted the KNN algorithm has the slowest testing time, the surprise is that it has the worst score. The best 
-combination for a KNN model is the TF-IDF vectorizer, it has a good score but a very high test time.
+These results shows that some default implementations already work very well with this dataset, as the Multinomial Naive
+Bayes and the Linear Support Vector Machines for example. The best performance is approximately 93.2% from Multinomial Naive Bayes combined
+with the Count vectorizer. 
 
-The SVC algorithm has an impressive score, the greatest for Hashing and TF-IDF vectorizers, just staying behind Naive 
-Bayes with the Count value, but in counter part has the slowest training time.
-
-The Multinomial Naive Bayes algorithm performs very well. It has great scores and small training and test times for any
-combination.
-
-This simple benchmark shows that in combination with any model being used the Hashing Vectorizer was not so good, so 
-it will be discarded from here through the final.
-
-Based on these results a minimum of 95% was established as target for Heimdall's accuracy. Thinking about a help desk 
-department that receives 1000 emails a day, it means that 50 emails would be classified wrong. This is not a big problem
-it is still faster to re-classify or re-forward 50 emails per day than having to read 1000 emails twice, one for 
-classification and one for solving the problem, without mentioning that a human classifier agent is not error free too.
+The goal for this project is improve this accuracy to at least 95% using one combination of feature extractor/model. 
 
 ## III. Methodology
 
